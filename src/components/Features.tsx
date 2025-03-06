@@ -48,21 +48,21 @@ export const Features = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
-            Why Choose TalentHire?
+            Why Choose Flexora?
           </h2>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
             Our platform provides the tools you need to succeed in the freelance economy, without the usual fees and restrictions.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 justify-center">
           {features.map((feature, index) => (
             <div 
               key={index}
-              className="rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl group backdrop-blur-sm"
+              className="rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl group backdrop-blur-sm w-full max-w-xs mx-auto"
             >
-              <div className={`p-8 bg-white/80 h-full flex flex-col`}>
-                <div className={`w-14 h-14 rounded-lg ${feature.color} shadow-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`p-8 bg-white/80 h-full flex flex-col border border-blue-400 hover:border-gray-200 rounded-xl`}>
+                <div className={`w-14 h-14 rounded-lg ${feature.color} shadow-md flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 border border-gray-100/50`}>
                   <feature.icon className={`w-7 h-7 ${feature.iconColor}`} />
                 </div>
                 <h3 className="text-xl font-semibold mb-3">{feature.title}</h3>

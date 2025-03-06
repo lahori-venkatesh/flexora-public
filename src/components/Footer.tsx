@@ -6,7 +6,7 @@ export const Footer = () => {
       <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-bold mb-4">TalentHire</h3>
+            <h3 className="text-xl font-bold mb-4">Flexora</h3>
             <p className="text-gray-300">
               Connect with top freelancers and clients. No commission, just pure value.
             </p>
@@ -61,7 +61,7 @@ export const Footer = () => {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-700 text-center text-gray-300">
-          <p>© {new Date().getFullYear()} TalentHire. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Flexora. All rights reserved.</p>
         </div>
       </div>
     </footer>

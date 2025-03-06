@@ -15,55 +15,46 @@ export const ScrollingReviewRow = ({
   variant = "primary" 
 }: ScrollingReviewRowProps) => {
   const rowRef = useRef<HTMLDivElement>(null);
-  const [rowWidth, setRowWidth] = useState(0);
+  const [duplicatedReviews, setDuplicatedReviews] = useState<Review[]>([]);
   
-  // Initialize the scroll position
+  // Set up duplicated reviews for infinite scroll
   useEffect(() => {
-    if (rowRef.current) {
-      const width = rowRef.current.scrollWidth / 2;
-      setRowWidth(width);
-      
-      // If scrolling left, start from the middle
-      if (direction === "left" && rowWidth > 0) {
-        rowRef.current.scrollLeft = width;
-      }
-    }
-  }, [direction, rowWidth]);
-  
-  // Animate the scroll
+    // Triple the reviews to ensure we have enough content for the scroll effect
+    setDuplicatedReviews([...reviews, ...reviews, ...reviews]);
+  }, [reviews]);
+
+  // Handle the scrolling animation with CSS animation instead of JS
   useEffect(() => {
-    const animateScroll = () => {
-      if (rowRef.current && rowWidth > 0) {
-        // Calculate scroll increment based on direction
-        const scrollIncrement = direction === "right" ? 0.5 : -0.5;
-        
-        // Update scroll position
-        rowRef.current.scrollLeft += scrollIncrement;
-        
-        // Handle reset logic based on direction
-        if (direction === "right" && rowRef.current.scrollLeft >= rowWidth) {
-          rowRef.current.scrollLeft = 0;
-        } else if (direction === "left" && rowRef.current.scrollLeft <= 0) {
-          rowRef.current.scrollLeft = rowWidth;
-        }
-      }
-    };
+    if (!rowRef.current || duplicatedReviews.length === 0) return;
     
-    // Only start animation if width is calculated
-    if (rowWidth > 0) {
-      const interval = setInterval(animateScroll, 20);
-      return () => clearInterval(interval);
+    // Set initial position for left scroll
+    if (direction === "left" && rowRef.current) {
+      const contentWidth = rowRef.current.scrollWidth;
+      const containerWidth = rowRef.current.clientWidth;
+      // Set initial scroll position in the middle for seamless loop
+      rowRef.current.scrollLeft = (contentWidth - containerWidth) / 2;
     }
-  }, [rowWidth, direction]);
+  }, [duplicatedReviews, direction]);
+
+  if (duplicatedReviews.length === 0) return null;
+
+  // Determine animation speed based on direction
+  const animationStyle = {
+    animation: `scroll-${direction} 40s linear infinite`,
+  };
 
   return (
     <div className="relative overflow-hidden">
       <div 
         ref={rowRef}
-        className="flex gap-6 py-4 w-max select-none"
-        style={{ WebkitOverflowScrolling: "touch" }}
+        className="flex gap-6 py-4 w-max overflow-hidden select-none"
+        style={{ 
+          scrollbarWidth: "none", // Hide scrollbar for Firefox
+          msOverflowStyle: "none", // Hide scrollbar for IE/Edge
+          ...animationStyle
+        }}
       >
-        {[...reviews, ...reviews].map((review, index) => (
+        {duplicatedReviews.map((review, index) => (
           <div
             key={`${direction}-${review.id}-${index}`} 
             className="w-80 flex-shrink-0 transition-all duration-300 transform hover:-translate-y-2"
@@ -72,6 +63,32 @@ export const ScrollingReviewRow = ({
           </div>
         ))}
       </div>
+      
+      {/* Add keyframe animations and scrollbar hiding */}
+      <style dangerouslySetInnerHTML={{
+        __html: `
+          /* Hide scrollbar for Chrome, Safari and Opera */
+          div::-webkit-scrollbar {
+            display: none;
+          }
+          
+          /* Define scroll animations */
+          @keyframes scroll-right {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-1 * (var(--card-width) + 1.5rem) * ${reviews.length})); }
+          }
+          
+          @keyframes scroll-left {
+            0% { transform: translateX(calc(-1 * (var(--card-width) + 1.5rem) * ${reviews.length})); }
+            100% { transform: translateX(0); }
+          }
+          
+          /* Set card width variable */
+          :root {
+            --card-width: 20rem; /* 20rem = w-80 */
+          }
+        `
+      }} />
     </div>
   );
 };

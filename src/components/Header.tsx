@@ -21,8 +21,8 @@ export const Header = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-14 md:h-16">
           <div className="flex items-center">
-            <a href="/" className="text-xl md:text-2xl font-bold text-primary">
-              TalentHire
+            <a href="/" className="text-xl md:text-2xl font-bold text-blue-700">
+              Flexora
             </a>
           </div>
           
@@ -50,15 +50,15 @@ export const Header = () => {
           {/* Desktop Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {user ? <>
-                <span className="text-sm text-gray-600">Welcome, {user.name}</span>
+                <span className="text-sm text-blue-700">Welcome, {user.name}</span>
                 <Button variant="outline" onClick={handleLogout} className="h-9 px-3 text-sm">
                   Logout
                 </Button>
               </> : <>
-                <Button variant="outline" onClick={() => navigate("/login")} className="h-9 px-3 text-sm text-sky-400">
+                <Button variant="outline" onClick={() => navigate("/login")} className="h-9 px-3 text-sm text-blue-700">
                   Login
                 </Button>
-                <Button onClick={() => navigate("/signup")} className="h-9 px-3 text-sm bg-primary hover:bg-primary/90 text-white">
+                <Button onClick={() => navigate("/signup")} className="h-9 px-3 text-sm bg-blue-700 hover:bg-blue-900 text-white">
                   Sign Up
                 </Button>
               </>}
